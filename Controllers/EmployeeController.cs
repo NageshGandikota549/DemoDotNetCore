@@ -7,33 +7,30 @@ using Microsoft.Extensions.Logging;
 using TestWebApi.Models;
 using TestWebApi.Repositories;
 using System.Web;
+using TestWebApi.Services;
+using System.Data;
+
 namespace TestWebApi.Controllers
 {
     [ApiController]
     [Route("api/Employee")]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployeeRepository _IEmployeeRepository;
-        private static readonly List<Employee> employees = new List<Employee>{
-                new Employee{EmployeeId=1,Name="Nagesh",Age=25,Role="Senior Software Engineer",JoiningDate=DateTime.Now},
-                new Employee{EmployeeId=1,Name="Sridhar",Age=25,Role="Software Engineer",JoiningDate=DateTime.Now},
-                new Employee{EmployeeId=1,Name="Kiran",Age=25,Role="Architect",JoiningDate=DateTime.Now}
-            };
-
+        private readonly IEmployeeService _IEmployeeService;
         private readonly ILogger<EmployeeController> _logger;
 
-        public EmployeeController(ILogger<EmployeeController> logger, IEmployeeRepository IEmployeeRepository)
+        public EmployeeController(ILogger<EmployeeController> logger, IEmployeeService IEmployeeService)
         {
             _logger = logger;
-            _IEmployeeRepository = IEmployeeRepository;
+            _IEmployeeService = IEmployeeService;
 
         }
-
-        public HttpResponseMessage AddEmployee(Employee employee)
+        [Route("AddEmployee")]
+        public HttpResponseMessage AddEmployee()
         {
             try
             {
-                _IEmployeeRepository.AddEmployee(employee);
+                _IEmployeeService.AddEmployee();
                 return new HttpResponseMessage(HttpStatusCode.OK);
 
 
@@ -45,15 +42,9 @@ namespace TestWebApi.Controllers
         }
 
         [Route("GetEmployees")]
-        public List<Employee> GetEmployees()
+        public IDataReader GetEmployees()
         {
-            return _IEmployeeRepository.getEmployees();
-        }
-
-        [Route("GetEmployeeById")]
-        public Employee GetEmployeeById(long employeeId)
-        {
-            return _IEmployeeRepository.getEmployeeById(employeeId);
+            return _IEmployeeService.getEmployees();
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TestWebApi.Models;
 using System.Data.Entity;
 using System.Linq;
+using TestWebApi.Constants;
 
 namespace TestWebApi.Repositories
 {
@@ -13,19 +14,18 @@ namespace TestWebApi.Repositories
         {
             _employeeContext = employeeContext;
         }
- 
-        public void AddEmployee(Employee employee)
+    
+        public void AddEmployee()
         {
-            _employeeContext.Employees.Add(employee);
+            _employeeContext.ExecuteNonQuery(EmployeeConstants.AddEmployee);
         }
-        public Employee getEmployeeById(long employeeId)
-        {
-            return _employeeContext.Employees.ToList().Find(emp => emp.EmployeeId.Equals(employeeId));
-        }
+      
 
         public List<Employee> getEmployees()
         {
-            return  _employeeContext.Employees.ToList();
+            // return  _employeeContext.ExecuteNonQuery(EmployeeConstants.GetEmployees);
+            return null;
+            
         }
     }
 }

@@ -4,12 +4,9 @@ using TestWebApi.Models;
 {
     public interface IEmployeeRepository{
 
-    void AddEmployee(Employee employee);
+    void AddEmployee();
 
     List<Employee> getEmployees();
-
-    Employee getEmployeeById(long employeeId);
-
 
 }
 }
